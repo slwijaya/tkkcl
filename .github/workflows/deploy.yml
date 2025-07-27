@@ -2,7 +2,7 @@ name: Deploy Go Microservices to GCP VM
 
 on:
   push:
-    branches: [main]     # Trigger on push to main branch
+    branches: [main]
 
 jobs:
   deploy:
@@ -35,7 +35,7 @@ jobs:
 
     - name: Configure Docker to use gcloud as a credential helper
       run: |
-        gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+        gcloud auth configure-docker asia-southeast2-docker.pkg.dev --quiet
 
     # Build & Push Auth Service
     - name: Build & Push Auth Service
@@ -57,8 +57,8 @@ jobs:
         username: ${{ env.VM_USER }}
         key: ${{ env.VM_SSH_KEY }}
         script: |
-          # Login to Artifact Registry
-          gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+          # Login to Artifact Registry (gunakan root registry juga)
+          gcloud auth configure-docker asia-southeast2-docker.pkg.dev --quiet
 
           # Pull latest images
           docker pull ${{ env.REGISTRY }}/auth-service:latest
@@ -68,7 +68,7 @@ jobs:
           docker rm -f auth-service || true
           docker rm -f gateway-service || true
 
-          # Start containers with docker-compose (assume compose file exists)
+          # Start containers with docker-compose
           docker-compose up -d
 
           # Prune unused images

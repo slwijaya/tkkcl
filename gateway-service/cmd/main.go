@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// function
 func main() {
 	config.LoadEnv()
 

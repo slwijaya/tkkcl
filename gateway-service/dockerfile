@@ -1,11 +1,11 @@
 # Dockerfile - Gateway Service (Go Proxy)
-FROM golang:1.22-alpine as build
+FROM golang:1.23-alpine as build
 
 WORKDIR /app
 COPY . .
 
 RUN go mod download
-RUN go build -o gateway-service main.go
+RUN go build -o gateway-service ./cmd/main.go
 
 FROM alpine:latest
 WORKDIR /app
